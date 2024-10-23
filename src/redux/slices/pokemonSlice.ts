@@ -1,53 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Pokemon, TypeInfo } from '../../types/type';
-
-const BASE_URL = 'https://pokeapi.co/api/v2';
-
-export const fetchPokemons = createAsyncThunk(
-  'pokemons/fetchPokemons',
-  async (page: number): Promise<{ pokemons: Pokemon[]; count: number }> => {
-    const offset = (page - 1) * 20;
-    const response = await fetch(
-      `${BASE_URL}/pokemon?offset=${offset}&limit=20`
-    );
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-
-    const count = data.count;
-
-    const detailedPokemons = await Promise.all(
-      data.results.map(async (pokemon: { url: string }) => {
-        const detailsResponse = await fetch(pokemon.url);
-        const details = await detailsResponse.json();
-        return {
-          id: details.id,
-          name: details.name,
-          image: details.sprites.front_default,
-          type: details.types
-            .map((typeInfo: TypeInfo) => typeInfo.type.name)
-            .join(', '),
-        };
-      })
-    );
-
-    return { pokemons: detailedPokemons, count };
-  }
-);
-
-interface PokemonsState {
-  pokemonsList: Pokemon[];
-  loading: boolean;
-  error: string | null;
-  currentPage: number;
-  totalCount: number;
-  searchQuery: string;
-  selectedTypes: string[];
-  favorites: Pokemon[];
-}
+import { fetchPokemons } from '../../services/api';
+import { Pokemon, PokemonsState } from '../../types/type';
 
 const initialState: PokemonsState = {
   pokemonsList: [],

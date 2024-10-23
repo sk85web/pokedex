@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 
 import Button from './ui/Button';
 
-const SearchBar = () => {
+type Props = {
+  onSearch: (query: string) => void;
+};
+
+const SearchBar: React.FC<Props> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -11,7 +15,12 @@ const SearchBar = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(e);
+    const trimmedQuery = query.trim();
+    if (trimmedQuery === '') {
+      onSearch('');
+    } else {
+      onSearch(trimmedQuery);
+    }
   };
 
   return (

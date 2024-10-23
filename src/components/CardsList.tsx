@@ -1,3 +1,6 @@
+import { useSelector } from 'react-redux';
+
+import { RootState } from '../redux/store';
 import { Pokemon } from '../types/type';
 import Card from './Card';
 
@@ -6,7 +9,9 @@ interface CardsListProps {
 }
 
 const CardsList: React.FC<CardsListProps> = ({ pokemons }) => {
-  if (pokemons.length === 0) {
+  const { loading } = useSelector((state: RootState) => state.pokemons);
+
+  if (!loading && pokemons.length === 0) {
     return <p className="text-red-500">No Pokémon found.</p>;
   }
   return (

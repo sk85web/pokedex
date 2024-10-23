@@ -1,19 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
+import { useNavigate } from 'react-router-dom';
 
 import SearchBar from '../components/SearchBar';
 import CardsList from '../components/CardsList';
-import { fetchPokemons, setCurrentPage } from '../redux/slices/pokemonSlice';
+import {
+  setCurrentPage,
+  resetPokemonState,
+} from '../redux/slices/pokemonSlice';
+import { fetchPokemons, searchPokemon } from '../services/api';
+import { Pokemon } from '../types/type';
 
 const PokemonGallery = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { loading, pokemonsList, currentPage, totalCount } = useSelector(
     (state: RootState) => state.pokemons
   );
 
+  const [searchedPokemon, setSearchedPokemon] = useState<Pokemon | null>(null);
   const [fetching, setFetching] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (fetching) {
@@ -46,13 +56,53 @@ const PokemonGallery = () => {
     }
   };
 
+  const handleSearch = useCallback(async (query: string) => {
+    const trimmedQuery = query.trim();
+
+    dispatch(resetPokemonState());
+
+    if (trimmedQuery === '') {
+      setSearchedPokemon(null);
+      setFetching(true);
+      navigate('/');
+    } else {
+      navigate(`?search=${trimmedQuery}`);
+    }
+
+    try {
+      const { payload: pokemon } = await dispatch(searchPokemon(trimmedQuery));
+      if (pokemon) {
+        setSearchedPokemon(pokemon as Pokemon);
+        setError(null);
+      } else {
+        setSearchedPokemon(null);
+      }
+    } catch (error) {
+      setError(`${error} Failed to fetch Pokémon data. Please try again.`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (searchQuery) {
+      setSearchQuery(searchQuery);
+      handleSearch(searchQuery);
+    }
+  }, [handleSearch, searchQuery]);
+
+  if (error) {
+    return <h2>Something went wrong. The error is {error}</h2>;
+  }
+
   return (
     <main className="mx-2">
       <div className="flex justify-center items-center mt-16">
-        <SearchBar />
+        <SearchBar onSearch={(query) => handleSearch(query)} />
       </div>
       {loading && <p>Loading...</p>}
-      <CardsList pokemons={pokemonsList} />
+
+      <CardsList
+        pokemons={searchedPokemon ? [searchedPokemon] : pokemonsList}
+      />
     </main>
   );
 };
