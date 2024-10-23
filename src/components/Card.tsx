@@ -1,13 +1,9 @@
 import { memo } from 'react';
 import { Pokemon } from '../types/type';
-// import generateGradient from '../utils/gradientGenerator';
 import { useNavigate } from 'react-router';
-
-// interface PokemonCardProps extends Pokemon {}
 
 const Card: React.FC<Pokemon> = memo(({ id, name, image, type }) => {
   const navigate = useNavigate();
-  //   const gradientClass = generateGradient(id);
 
   const handleClick = (): void => {
     navigate(`/pokemon/${id}`);

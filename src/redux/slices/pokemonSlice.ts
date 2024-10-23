@@ -6,7 +6,7 @@ const BASE_URL = 'https://pokeapi.co/api/v2';
 
 export const fetchPokemons = createAsyncThunk(
   'pokemons/fetchPokemons',
-  async (page: number): Promise<Pokemon[]> => {
+  async (page: number): Promise<{ pokemons: Pokemon[]; count: number }> => {
     const offset = (page - 1) * 20;
     const response = await fetch(
       `${BASE_URL}/pokemon?offset=${offset}&limit=20`
@@ -16,6 +16,8 @@ export const fetchPokemons = createAsyncThunk(
       throw new Error('Network response was not ok');
     }
     const data = await response.json();
+
+    const count = data.count;
 
     const detailedPokemons = await Promise.all(
       data.results.map(async (pokemon: { url: string }) => {
@@ -32,9 +34,7 @@ export const fetchPokemons = createAsyncThunk(
       })
     );
 
-    console.log('Detailed Pokemons:', detailedPokemons);
-
-    return detailedPokemons;
+    return { pokemons: detailedPokemons, count };
   }
 );
 
@@ -43,6 +43,7 @@ interface PokemonsState {
   loading: boolean;
   error: string | null;
   currentPage: number;
+  totalCount: number;
   searchQuery: string;
   selectedTypes: string[];
   favorites: Pokemon[];
@@ -53,6 +54,7 @@ const initialState: PokemonsState = {
   loading: false,
   error: null,
   currentPage: 1,
+  totalCount: 0,
   searchQuery: '',
   selectedTypes: [],
   favorites: [],
@@ -62,6 +64,9 @@ export const pokemonSlice = createSlice({
   name: 'pokemon',
   initialState,
   reducers: {
+    setCurrentPage: (state) => {
+      state.currentPage = state.currentPage + 1;
+    },
     addFavorite: (state, action: PayloadAction<Pokemon>) => {
       state.favorites.push(action.payload);
     },
@@ -89,10 +94,16 @@ export const pokemonSlice = createSlice({
       })
       .addCase(
         fetchPokemons.fulfilled,
-        (state, action: PayloadAction<Pokemon[]>) => {
+        (
+          state,
+          action: PayloadAction<{ pokemons: Pokemon[]; count: number }>
+        ) => {
           state.loading = false;
-          state.pokemonsList = action.payload;
-          state.currentPage += 1;
+          state.pokemonsList = [
+            ...state.pokemonsList,
+            ...action.payload.pokemons,
+          ];
+          state.totalCount = action.payload.count;
         }
       )
       .addCase(fetchPokemons.rejected, (state, action) => {
@@ -103,6 +114,7 @@ export const pokemonSlice = createSlice({
 });
 
 export const {
+  setCurrentPage,
   addFavorite,
   removeFavorites,
   setSearchQuery,
