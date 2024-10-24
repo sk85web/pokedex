@@ -14,7 +14,7 @@ const initialState: PokemonsState = {
   currentPage: 1,
   totalCount: 0,
   searchQuery: '',
-  selectedTypes: [],
+  // selectedTypes: [],
   favorites: [],
   types: [],
 };
@@ -37,9 +37,9 @@ export const pokemonSlice = createSlice({
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
     },
-    setSelectedTypes: (state, action: PayloadAction<string[]>) => {
-      state.selectedTypes = action.payload;
-    },
+    // setSelectedTypes: (state, action: PayloadAction<string[]>) => {
+    //   state.selectedTypes = action.payload;
+    // },
     resetPokemonState: (state) => {
       state.pokemonsList = [];
       state.currentPage = 1;
@@ -108,7 +108,7 @@ export const {
   addFavorite,
   removeFavorites,
   setSearchQuery,
-  setSelectedTypes,
+  // setSelectedTypes,
   resetPokemonState,
 } = pokemonSlice.actions;
 

@@ -23,7 +23,7 @@ export interface PokemonsState {
   currentPage: number;
   totalCount: number;
   searchQuery: string;
-  selectedTypes: string[];
+  // selectedTypes: string[];
   favorites: Pokemon[];
   types: string[];
 }

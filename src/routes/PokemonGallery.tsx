@@ -17,6 +17,7 @@ import {
 } from '../services/api';
 import { Pokemon } from '../types/type';
 import FilterBar from '../components/FilterBar';
+import { Circles } from 'react-loader-spinner';
 
 const PokemonGallery = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,13 +27,13 @@ const PokemonGallery = () => {
   );
 
   const [searchedPokemon, setSearchedPokemon] = useState<Pokemon | null>(null);
-  const [selectedType, setSelectedType] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>('All');
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (selectedType === 'all') {
+    if (selectedType === 'All') {
       if (fetching) {
         dispatch(fetchPokemons(currentPage))
           .then(() => dispatch(setCurrentPage()))
@@ -70,6 +71,7 @@ const PokemonGallery = () => {
     const trimmedQuery = query.trim();
 
     dispatch(resetPokemonState());
+    setSelectedType('All');
 
     if (trimmedQuery === '') {
       setSearchedPokemon(null);
@@ -111,13 +113,17 @@ const PokemonGallery = () => {
 
   return (
     <main className="mx-2">
-      <div className="flex justify-center items-center mt-16">
-        <SearchBar onSearch={(query) => handleSearch(query)} />
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex justify-center items-center mt-16 w-full">
+          <SearchBar onSearch={(query) => handleSearch(query)} />
+        </div>
+        <FilterBar onChange={handleFilterChange} selectedType={selectedType}/>
       </div>
-      <div>
-        <FilterBar onChange={handleFilterChange} />
-      </div>
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <div className="flex justify-center items-center">
+          <Circles height="80" width="80" color="#4fa94d" ariaLabel="loading" />
+        </div>
+      )}
       <CardsList
         pokemons={searchedPokemon ? [searchedPokemon] : pokemonsList}
       />
