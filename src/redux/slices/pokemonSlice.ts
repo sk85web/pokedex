@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchPokemons } from '../../services/api';
+import {
+  fetchPokemons,
+  getAllTypes,
+  fetchPokemonsByType,
+} from '../../services/api';
 import { Pokemon, PokemonsState } from '../../types/type';
 
 const initialState: PokemonsState = {
@@ -12,6 +16,7 @@ const initialState: PokemonsState = {
   searchQuery: '',
   selectedTypes: [],
   favorites: [],
+  types: [],
 };
 
 export const pokemonSlice = createSlice({
@@ -63,7 +68,38 @@ export const pokemonSlice = createSlice({
       .addCase(fetchPokemons.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? null;
-      });
+      })
+
+      .addCase(fetchPokemonsByType.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchPokemonsByType.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ pokemons: Pokemon[]; count: number }>
+        ) => {
+          state.loading = false;
+          state.pokemonsList = [
+            ...state.pokemonsList,
+            ...action.payload.pokemons,
+          ];
+          state.totalCount = action.payload.count;
+        }
+      )
+      .addCase(fetchPokemonsByType.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? null;
+      })
+
+      .addCase(
+        getAllTypes.fulfilled,
+        (state, action: PayloadAction<string[]>) => {
+          state.loading = false;
+          state.types = action.payload;
+        }
+      );
   },
 });
 

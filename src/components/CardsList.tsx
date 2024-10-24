@@ -10,7 +10,6 @@ interface CardsListProps {
 
 const CardsList: React.FC<CardsListProps> = ({ pokemons }) => {
   const { loading } = useSelector((state: RootState) => state.pokemons);
-
   if (!loading && pokemons.length === 0) {
     return <p className="text-red-500">No Pokémon found.</p>;
   }

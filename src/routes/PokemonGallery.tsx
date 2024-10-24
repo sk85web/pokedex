@@ -10,8 +10,13 @@ import {
   setCurrentPage,
   resetPokemonState,
 } from '../redux/slices/pokemonSlice';
-import { fetchPokemons, searchPokemon } from '../services/api';
+import {
+  fetchPokemons,
+  searchPokemon,
+  fetchPokemonsByType,
+} from '../services/api';
 import { Pokemon } from '../types/type';
+import FilterBar from '../components/FilterBar';
 
 const PokemonGallery = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,24 +26,29 @@ const PokemonGallery = () => {
   );
 
   const [searchedPokemon, setSearchedPokemon] = useState<Pokemon | null>(null);
+  const [selectedType, setSelectedType] = useState<string>('all');
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (fetching) {
-      dispatch(fetchPokemons(currentPage))
-        .then(() => dispatch(setCurrentPage()))
-        .finally(() => setFetching(false));
+    if (selectedType === 'all') {
+      if (fetching) {
+        dispatch(fetchPokemons(currentPage))
+          .then(() => dispatch(setCurrentPage()))
+          .finally(() => setFetching(false));
+      }
+    } else {
+      dispatch(fetchPokemonsByType(selectedType));
     }
-  }, [fetching]);
+  }, [fetching, selectedType]);
 
   useEffect(() => {
     const debouncedScrollHandler = debounce(scrollHandler, 300);
 
-    document.addEventListener('scroll', debouncedScrollHandler);
+    window.addEventListener('scroll', debouncedScrollHandler);
     return () => {
-      document.removeEventListener('scroll', debouncedScrollHandler);
+      window.removeEventListener('scroll', debouncedScrollHandler);
       debouncedScrollHandler.cancel();
     };
   }, []);
@@ -50,7 +60,7 @@ const PokemonGallery = () => {
       pokemonsList.length === totalCount &&
       target.documentElement.scrollHeight -
         (target.documentElement.scrollTop + window.innerHeight) <
-        100
+        200
     ) {
       setFetching(true);
     }
@@ -89,6 +99,12 @@ const PokemonGallery = () => {
     }
   }, [handleSearch, searchQuery]);
 
+  const handleFilterChange = (type: string) => {
+    dispatch(resetPokemonState());
+    setSelectedType(type);
+    setFetching(true);
+  };
+
   if (error) {
     return <h2>Something went wrong. The error is {error}</h2>;
   }
@@ -98,8 +114,10 @@ const PokemonGallery = () => {
       <div className="flex justify-center items-center mt-16">
         <SearchBar onSearch={(query) => handleSearch(query)} />
       </div>
+      <div>
+        <FilterBar onChange={handleFilterChange} />
+      </div>
       {loading && <p>Loading...</p>}
-
       <CardsList
         pokemons={searchedPokemon ? [searchedPokemon] : pokemonsList}
       />

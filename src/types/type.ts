@@ -11,6 +11,11 @@ export interface TypeInfo {
   };
 }
 
+export interface PokemonType {
+  name: string;
+  url: string;
+}
+
 export interface PokemonsState {
   pokemonsList: Pokemon[];
   loading: boolean;
@@ -20,4 +25,5 @@ export interface PokemonsState {
   searchQuery: string;
   selectedTypes: string[];
   favorites: Pokemon[];
+  types: string[];
 }
