@@ -13,8 +13,7 @@ const initialState: PokemonsState = {
   error: null,
   currentPage: 1,
   totalCount: 0,
-  searchQuery: '',
-  // selectedTypes: [],
+  // searchQuery: '',
   favorites: [],
   types: [],
 };
@@ -27,16 +26,25 @@ export const pokemonSlice = createSlice({
       state.currentPage = state.currentPage + 1;
     },
     addFavorite: (state, action: PayloadAction<Pokemon>) => {
-      state.favorites.push(action.payload);
+      const exists = state.favorites.some(
+        (favorite) => favorite.id === action.payload.id
+      );
+      if (exists) {
+        state.favorites = state.favorites.filter(
+          (favorite) => favorite.id !== action.payload.id
+        );
+      } else {
+        state.favorites.push(action.payload);
+      }
     },
     removeFavorites: (state, action: PayloadAction<number>) => {
       state.favorites = state.favorites.filter(
         (pokemon) => pokemon.id !== action.payload
       );
     },
-    setSearchQuery: (state, action: PayloadAction<string>) => {
-      state.searchQuery = action.payload;
-    },
+    // setSearchQuery: (state, action: PayloadAction<string>) => {
+    //   state.searchQuery = action.payload;
+    // },
     // setSelectedTypes: (state, action: PayloadAction<string[]>) => {
     //   state.selectedTypes = action.payload;
     // },
@@ -107,7 +115,7 @@ export const {
   setCurrentPage,
   addFavorite,
   removeFavorites,
-  setSearchQuery,
+  // setSearchQuery,
   // setSelectedTypes,
   resetPokemonState,
 } = pokemonSlice.actions;

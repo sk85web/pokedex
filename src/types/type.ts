@@ -22,8 +22,12 @@ export interface PokemonsState {
   error: string | null;
   currentPage: number;
   totalCount: number;
-  searchQuery: string;
-  // selectedTypes: string[];
+  // searchQuery: string;
   favorites: Pokemon[];
   types: string[];
+}
+
+export interface FetchPokemonsResponse {
+  pokemons: Pokemon[];
+  count: number;
 }

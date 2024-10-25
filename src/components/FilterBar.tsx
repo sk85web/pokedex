@@ -2,6 +2,7 @@ import { getAllTypes } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type FilterProps = {
   onChange: (value: string) => void;
@@ -10,6 +11,7 @@ type FilterProps = {
 
 const FilterBar: React.FC<FilterProps> = ({ onChange, selectedType }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { types } = useSelector((state: RootState) => state.pokemons);
   const [value, setValue] = useState('All');
 
@@ -21,6 +23,7 @@ const FilterBar: React.FC<FilterProps> = ({ onChange, selectedType }) => {
 
   useEffect(() => {
     setValue(selectedType);
+    navigate('/');
   }, [selectedType]);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

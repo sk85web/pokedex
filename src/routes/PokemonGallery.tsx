@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,14 +15,14 @@ import {
   searchPokemon,
   fetchPokemonsByType,
 } from '../services/api';
-import { Pokemon } from '../types/type';
+import { FetchPokemonsResponse, Pokemon } from '../types/type';
 import FilterBar from '../components/FilterBar';
 import { Circles } from 'react-loader-spinner';
 
 const PokemonGallery = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { loading, pokemonsList, currentPage, totalCount } = useSelector(
+  const { loading, pokemonsList, currentPage } = useSelector(
     (state: RootState) => state.pokemons
   );
 
@@ -32,15 +32,27 @@ const PokemonGallery = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  const totalCountRef = useRef(0);
+  const pokemonsListLength = useRef(0);
+
   useEffect(() => {
     if (selectedType === 'All') {
       if (fetching) {
         dispatch(fetchPokemons(currentPage))
-          .then(() => dispatch(setCurrentPage()))
+          .then((res) => {
+            const result = res.payload as FetchPokemonsResponse;
+            totalCountRef.current = result.count;
+            pokemonsListLength.current += result.pokemons.length;
+            dispatch(setCurrentPage());
+          })
           .finally(() => setFetching(false));
       }
     } else {
-      dispatch(fetchPokemonsByType(selectedType));
+      dispatch(fetchPokemonsByType(selectedType)).then((res) => {
+        const result = res.payload as FetchPokemonsResponse;
+        totalCountRef.current = result.count;
+        pokemonsListLength.current = result.pokemons.length;
+      });
     }
   }, [fetching, selectedType]);
 
@@ -58,7 +70,7 @@ const PokemonGallery = () => {
     const target = e.target as Document;
     if (
       !loading &&
-      pokemonsList.length === totalCount &&
+      pokemonsListLength.current < totalCountRef.current &&
       target.documentElement.scrollHeight -
         (target.documentElement.scrollTop + window.innerHeight) <
         200
@@ -104,6 +116,8 @@ const PokemonGallery = () => {
   const handleFilterChange = (type: string) => {
     dispatch(resetPokemonState());
     setSelectedType(type);
+    setSearchQuery('');
+    setSearchedPokemon(null);
     setFetching(true);
   };
 
@@ -115,12 +129,15 @@ const PokemonGallery = () => {
     <main className="mx-2">
       <div className="flex flex-col items-center gap-4">
         <div className="flex justify-center items-center mt-16 w-full">
-          <SearchBar onSearch={(query) => handleSearch(query)} />
+          <SearchBar
+            onSearch={(query) => handleSearch(query)}
+            searchQuery={searchQuery}
+          />
         </div>
-        <FilterBar onChange={handleFilterChange} selectedType={selectedType}/>
+        <FilterBar onChange={handleFilterChange} selectedType={selectedType} />
       </div>
       {loading && (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-16">
           <Circles height="80" width="80" color="#4fa94d" ariaLabel="loading" />
         </div>
       )}
