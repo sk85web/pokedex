@@ -1,8 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import LayoutPage from './layout/LayoutPage';
 import Home from './routes/Home';
 import Favorites from './routes/Favorites';
-// import AboutUs from './routes/AboutUs';
+import AboutMe from './routes/AboutMe';
 import PokemonDetails from './routes/PokemonDetails';
 import NotFoundPage from './routes/NotFoundPage';
 
@@ -23,10 +24,10 @@ const router = createBrowserRouter([
         path: '/favorites',
         element: <Favorites />,
       },
-      // {
-      //   path: '/aboutme',
-      //   element: <AboutMe />,
-      // },
+      {
+        path: '/aboutme',
+        element: <AboutMe />,
+      },
       {
         path: '*',
         element: <NotFoundPage />,

@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Logo from '../ui/Logo';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { getNavigationClass } from '../../utils/navigationClass';
 
 const Header = () => {
   const { favorites } = useSelector((state: RootState) => state.pokemons);
@@ -10,11 +11,14 @@ const Header = () => {
     <div className="h-24 bg-gray-700 text-white flex justify-between items-center py-2 px-4">
       <Logo />
       <div className="flex text-xl items-center font-bold gap-6">
-        <Link className="hover:text-amber-300 hover:underline" to="/">
+        <NavLink
+          className={({ isActive }) => getNavigationClass(isActive)}
+          to="/"
+        >
           Home
-        </Link>
-        <Link
-          className="hover:text-amber-300 hover:underline relative"
+        </NavLink>
+        <NavLink
+          className={({ isActive }) => getNavigationClass(isActive)}
           to="/favorites"
         >
           Favorites
@@ -23,10 +27,13 @@ const Header = () => {
               {favorites.length}
             </span>
           )}
-        </Link>
-        <Link className="hover:text-amber-300 hover:underline" to="/aboutUs">
+        </NavLink>
+        <NavLink
+          className={({ isActive }) => getNavigationClass(isActive)}
+          to="/aboutme"
+        >
           About me
-        </Link>
+        </NavLink>
       </div>
     </div>
   );
