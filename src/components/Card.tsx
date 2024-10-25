@@ -13,7 +13,6 @@ const Card: React.FC<Pokemon> = memo(({ id, name, image, type }) => {
   const { favorites } = useSelector((state: RootState) => state.pokemons);
 
   const isSelected = favorites.some((favorite) => favorite.id === id);
-  console.log(isSelected);
 
   const handleClick = (): void => {
     navigate(`/pokemon/${id}`);

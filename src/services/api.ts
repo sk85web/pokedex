@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { Pokemon, TypeInfo, PokemonType } from '../types/type';
+import { Pokemon, TypeInfo, PokemonType, AbilitiesInfo } from '../types/type';
 
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
@@ -125,3 +125,24 @@ export const fetchPokemonsByType = createAsyncThunk(
     return { pokemons: detailedPokemons, count };
   }
 );
+
+export const getPokemonDetails = async (pokemonId: number) => {
+  const response = await fetch(`${BASE_URL}/pokemon/${pokemonId}`);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const data = await response.json();
+
+  return {
+    id: data.id,
+    name: data.name,
+    image: data.sprites.front_default,
+    baseExperience: data.base_experience,
+    height: data.height,
+    weight: data.weight,
+    abilities: data.abilities.map(
+      (abilityInfo: AbilitiesInfo) => abilityInfo.ability.name
+    ),
+    types: data.types.map((typeInfo: TypeInfo) => typeInfo.type.name),
+  };
+};

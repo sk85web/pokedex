@@ -11,10 +11,10 @@ interface CardsListProps {
 const CardsList: React.FC<CardsListProps> = ({ pokemons }) => {
   const { loading } = useSelector((state: RootState) => state.pokemons);
   if (!loading && pokemons.length === 0) {
-    return <p className="text-red-500">No Pokémon found.</p>;
+    return <p className="text-red-500 text-4xl">No Pokémon found.</p>;
   }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 my-16">
+    <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] lg:grid-cols-3 xl:grid-cols-4 gap-4 my-16">
       {pokemons.map((pokemon) => (
         <Card key={pokemon.id} {...pokemon} />
       ))}

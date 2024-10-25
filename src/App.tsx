@@ -1,8 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LayoutPage from './layout/LayoutPage';
 import Home from './routes/Home';
+import Favorites from './routes/Favorites';
 // import AboutUs from './routes/AboutUs';
-// import PokemmDetails from './routes/PokemonDetails';
+import PokemonDetails from './routes/PokemonDetails';
 // import NotFoundPage from './routes/NotFoundPage';
 
 const router = createBrowserRouter([
@@ -13,12 +14,14 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
-        children: [
-          // {
-          //   path: '/pokemon/:id',
-          //   element: <PokemmDetails />,
-          // },
-        ],
+      },
+      {
+        path: '/pokemon/:id',
+        element: <PokemonDetails />,
+      },
+      {
+        path: '/favorites',
+        element: <Favorites />,
       },
       // {
       //   path: '/aboutme',

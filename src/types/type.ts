@@ -11,6 +11,12 @@ export interface TypeInfo {
   };
 }
 
+export interface AbilitiesInfo {
+  ability: {
+    name: string;
+  };
+}
+
 export interface PokemonType {
   name: string;
   url: string;
@@ -22,7 +28,6 @@ export interface PokemonsState {
   error: string | null;
   currentPage: number;
   totalCount: number;
-  // searchQuery: string;
   favorites: Pokemon[];
   types: string[];
 }
@@ -31,3 +36,14 @@ export interface FetchPokemonsResponse {
   pokemons: Pokemon[];
   count: number;
 }
+
+export type PokemonDetails = {
+  id: number;
+  name: string;
+  baseExperience: number;
+  height: number;
+  weight: number;
+  types: string[];
+  abilities: string[];
+  image: string;
+};
