@@ -51,7 +51,7 @@ const PokemonDetails: React.FC = () => {
         <h2 className="rainbow-text uppercase text-2xl text-center font-bold pb-1 my-4 tracking-wide text-amber-300 bg-gray-700 mt-0 w-full">
           {pokemon.name}
         </h2>
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-6 px-8">
           <img
             src={pokemon.image}
             alt={pokemon.name}

@@ -4,7 +4,7 @@ import Home from './routes/Home';
 import Favorites from './routes/Favorites';
 // import AboutUs from './routes/AboutUs';
 import PokemonDetails from './routes/PokemonDetails';
-// import NotFoundPage from './routes/NotFoundPage';
+import NotFoundPage from './routes/NotFoundPage';
 
 const router = createBrowserRouter([
   {
@@ -27,10 +27,10 @@ const router = createBrowserRouter([
       //   path: '/aboutme',
       //   element: <AboutMe />,
       // },
-      // {
-      //   path: '*',
-      //   element: <NotFoundPage />,
-      // },
+      {
+        path: '*',
+        element: <NotFoundPage />,
+      },
     ],
   },
 ]);
