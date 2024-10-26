@@ -37,7 +37,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: '/pokedex', // Указываем базовый путь для маршрутов
+    basename: '/pokedex',
   }
 );
 
