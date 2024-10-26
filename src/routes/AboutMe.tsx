@@ -21,7 +21,7 @@ const AboutMe = () => {
           a look at my{' '}
           <a
             className="text-blue-700 font-bold hover:underline"
-            href="https://drive.google.com/file/d/1Z50nt1SrYR4xGKU-Zx5nAlmiI8_BFzdA/view?usp=drive_link"
+            href="https://drive.google.com/file/d/1GsuUv99yrFqqf7ysQgkOggJXKT4dW8YR/view?usp=drive_link"
           >
             CV
           </a>{' '}
