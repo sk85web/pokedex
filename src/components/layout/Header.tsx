@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
-import Logo from '../ui/Logo';
 import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+
+import Logo from '../ui/Logo';
 import { RootState } from '../../redux/store';
 import { getNavigationClass } from '../../utils/navigationClass';
-import { useState, useEffect } from 'react';
 
 const Header = () => {
   const { favorites } = useSelector((state: RootState) => state.pokemons);
@@ -52,13 +53,15 @@ const Header = () => {
           Home
         </NavLink>
         <NavLink
-          className={({ isActive }) => getNavigationClass(isActive)}
+          className={({ isActive }) =>
+            `${getNavigationClass(isActive)} relative`
+          }
           to="/favorites"
           onClick={() => setIsMenuOpen(false)}
         >
           Favorites
           {favorites.length !== 0 && (
-            <span className="absolute right-[-10px] bottom-[10px] test-[13px] text-amber-300">
+            <span className="absolute z-60 right-[-10px] bottom-[10px] test-[13px] text-amber-300">
               {favorites.length}
             </span>
           )}
