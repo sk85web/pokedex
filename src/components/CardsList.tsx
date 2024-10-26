@@ -14,7 +14,7 @@ const CardsList: React.FC<CardsListProps> = ({ pokemons }) => {
     return <p className="text-red-500 text-4xl">No Pokémon found.</p>;
   }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] lg:grid-cols-3 xl:grid-cols-4 gap-4 my-16">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 my-16">
       {pokemons.map((pokemon) => (
         <Card key={pokemon.id} {...pokemon} />
       ))}
