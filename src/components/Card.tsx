@@ -26,6 +26,12 @@ const Card: React.FC<Pokemon> = memo(({ id, name, image, type }) => {
     <div
       onClick={handleClick}
       className={`group relative my-4 cursor-pointer overflow-hidden rounded-lg shadow-md transition duration-150 ease-in-out `}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') handleClick();
+      }}
+      aria-label={`View details of ${name}`}
     >
       <div className="relative h-40 overflow-hidden rounded-md">
         <div className="absolute bottom-0 right-0 bg-amber-300 py-2 px-4 rounded-md z-10">
@@ -42,6 +48,12 @@ const Card: React.FC<Pokemon> = memo(({ id, name, image, type }) => {
             e.stopPropagation();
             handleSelectCard({ id, name, image, type });
           }}
+          aria-pressed={isSelected}
+          aria-label={
+            isSelected
+              ? `Remove ${name} from favorites`
+              : `Add ${name} to favorites`
+          }
         >
           <HeartIcon isSelected={isSelected} />
         </span>

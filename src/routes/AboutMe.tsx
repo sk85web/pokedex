@@ -4,7 +4,7 @@ const AboutMe = () => {
       <div className="text-center">
         <img
           src="path/to/your/photo.jpg"
-          alt="Your Name"
+          alt="photo"
           className="w-32 h-32 rounded-full object-cover shadow-lg mb-4"
         />
         <h1 className="text-4xl font-bold text-gray-800">

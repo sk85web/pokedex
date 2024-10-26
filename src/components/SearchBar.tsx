@@ -40,10 +40,13 @@ const SearchBar: React.FC<Props> = ({ onSearch, searchQuery }) => {
           onChange={handleChange}
           className="border-2 p-2 flex-grow rounded-md"
           placeholder="Search Pokémon..."
+          role="search"
+          aria-label="Search Pokémon by name"
         />
         <Button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 mt-2 sm:mt-0"
+          aria-label="Submit search query"
         >
           Search
         </Button>

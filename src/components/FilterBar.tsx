@@ -44,6 +44,7 @@ const FilterBar: React.FC<FilterProps> = ({ onChange, selectedType }) => {
         value={value}
         onChange={handleChange}
         className="border-2 p-2 flex-grow rounded-md min-w-{130px}"
+        aria-label="Filter Pokémon by type"
       >
         <option value={'All'}>All</option>
         {sortedTypes.map((type) => (
@@ -58,6 +59,7 @@ const FilterBar: React.FC<FilterProps> = ({ onChange, selectedType }) => {
           <button
             onClick={resetFilter}
             className="ml-2 p-1 text-gray-500 text-2xl hover:text-gray-800"
+            aria-label="Clear filter"
           >
             &times;
           </button>
