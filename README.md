@@ -1,50 +1,31 @@
-# React + TypeScript + Vite
+This is a [test-task](https://docs.google.com/document/d/1_lYPpnbwtv4Pl3UYwqxCZ5-gsmTNJgHV4BkhjmRmVhA/edit?tab=t.0#heading=h.oa7zfndmhr5l) react project for SagTech.
+![image](https://github.com/user-attachments/assets/bc82525f-1736-4c46-a498-ac5bf5f23058)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+First, run the development server:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Learn More
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+This project uses React.js, Typescript, Tailwindcss and Redux-Toolkit as a state management. Vite as a build tool.
+To learn more about React.js, Typescript and Redux-Toolkit take a look at the following resources:
+
+- [react](https://react.dev/) - learn about React.js library.
+- [redux-toolkit](https://redux-toolkit.js.org/) - a state management tutorial.
+- [typescript](https://www.typescriptlang.org/docs/) - typescript documentation.
+- [vite](https://vite.dev/) - vite documentation.
+- [tailwindcss](https://tailwindcss.com) - tailwindcss documentation.
