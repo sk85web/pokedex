@@ -80,7 +80,7 @@ const PokemonGallery = () => {
   };
 
   const handleSearch = useCallback(async (query: string) => {
-    const trimmedQuery = query.trim();
+    const trimmedQuery = query.trim().toLowerCase();
 
     dispatch(resetPokemonState());
     setSelectedType('All');

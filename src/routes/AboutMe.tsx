@@ -1,3 +1,5 @@
+import photo from '/src/assets/photo.png';
+
 const AboutMe = () => {
   return (
     <div
@@ -6,7 +8,7 @@ const AboutMe = () => {
       <div className="h-40 overflow-hidden rounded-md">
         <img
           className="h-full w-full object-contain transition duration-300 ease-in-out group-hover:scale-110 "
-          src="src/assets/photo.png"
+          src={photo}
           alt="photo"
         />
       </div>
