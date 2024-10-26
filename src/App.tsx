@@ -7,34 +7,39 @@ import AboutMe from './routes/AboutMe';
 import PokemonDetails from './routes/PokemonDetails';
 import NotFoundPage from './routes/NotFoundPage';
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <LayoutPage />,
+      children: [
+        {
+          path: '/',
+          element: <Home />,
+        },
+        {
+          path: '/pokemon/:id',
+          element: <PokemonDetails />,
+        },
+        {
+          path: '/favorites',
+          element: <Favorites />,
+        },
+        {
+          path: '/aboutme',
+          element: <AboutMe />,
+        },
+        {
+          path: '*',
+          element: <NotFoundPage />,
+        },
+      ],
+    },
+  ],
   {
-    path: '/',
-    element: <LayoutPage />,
-    children: [
-      {
-        path: '/',
-        element: <Home />,
-      },
-      {
-        path: '/pokemon/:id',
-        element: <PokemonDetails />,
-      },
-      {
-        path: '/favorites',
-        element: <Favorites />,
-      },
-      {
-        path: '/aboutme',
-        element: <AboutMe />,
-      },
-      {
-        path: '*',
-        element: <NotFoundPage />,
-      },
-    ],
-  },
-]);
+    basename: '/pokedex', // Указываем базовый путь для маршрутов
+  }
+);
 
 const App = () => {
   return <RouterProvider router={router} />;
